@@ -4,7 +4,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from .models import Article
+from .models import User
 from .serializers import ArticleSerializer
+from .serializers import UserSerializer
 
 
 # Create your views here.
@@ -16,12 +18,28 @@ def article_list(request):
         serializer = ArticleSerializer(articles, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
-        print('post method called')
         data = JSONParser().parse(request)
         serializer = ArticleSerializer(data=data)
 
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
-        return  JsonResponse(serializer.errors, status=400)
+        return JsonResponse(serializer.errors, status=400)
+
+
+@csrf_exempt
+def user_list(request):
+    if request.method == 'GET':
+        print('get user method called')
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = UserSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
 
