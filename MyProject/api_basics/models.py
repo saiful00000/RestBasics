@@ -9,13 +9,17 @@ class Article(models.Model):
     email = models.EmailField(max_length=100)
     date = models.DateTimeField(auto_now=True)
 
+    objects = models.Manager()
+
     def __str__(self):
         return self.title
 
 
-class User(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-
-    def __str__(self):
-        return self.name
+# class User(models.Model):
+#     objects = models.Manager()
+#
+#     name = models.CharField(max_length=100)
+#     email = models.EmailField(max_length=100)
+#
+#     def __str__(self):
+#         return self.name
